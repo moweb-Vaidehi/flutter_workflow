@@ -38,7 +38,7 @@ jobs:
       # Gets the dependencies and builds the app
       - run: flutter pub get
       - run: flutter clean
-      - run: flutter build ios--no-codesign
+      - run: flutter build ios --no-codesign
 
   build_appbundle:
       name: Build Flutter(android)
