@@ -3,7 +3,7 @@ name: CI
 
 # When should this workflow run?
 on:
-  pull_request:
+  pull_request: #push #close
     branches:
       - master
 

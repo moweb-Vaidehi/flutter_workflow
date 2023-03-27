@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "639994281828",
+    "project_id": "flutter-workflow-9a658",
+    "storage_bucket": "flutter-workflow-9a658.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639994281828:android:e827119e1a430dc7fcc471",
+        "android_client_info": {
+          "package_name": "com.example.flutter_workflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639994281828-vi65actp11kk7rfsgg6ouee65bvpcupc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoXYtufNqgw-E92R6lHXVzSD7uMigzrlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639994281828-vi65actp11kk7rfsgg6ouee65bvpcupc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
