@@ -38,11 +38,11 @@ jobs:
             cache: true
         - run: flutter pub get
         - run: flutter clean
-        - run: flutter build appbundle
+        - run: flutter build apk
         - name: Push to Releases
           uses: ncipollo/release-action@v1
           with:
-            artifacts: "build/app/outputs/apk/release/app-release.aab"
+            artifacts: "build/app/outputs/apk/release/*"
             tag: v1.0.${{github.run_number}}
             token: ${{secrets.TOKEN}}
 
@@ -53,6 +53,5 @@ jobs:
           with:
             appId: ${{ secrets.FIREBASE_APP_ID }}
             token: ${{ secrets.FIREBASE_TOKEN }}
-            releaseNotesFile: build/app/outputs/bundle/release/output-metadata/RELEASENOTES.txt
-            artifactPath: build/app/outputs/bundle/release/app-release.aab
+            file: build/app/outputs/bundle/release/app-release.apk
 
