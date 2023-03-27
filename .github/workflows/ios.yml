@@ -1,0 +1,69 @@
+# The name of your workflow
+name: CI
+
+# When should this workflow run?
+on:
+  pull_request: #push #close
+    branches:
+      - master
+
+# Jobs to perform in this workflow
+jobs:
+  flutter_test:
+    # Name of the job
+    name: Run Flutter Test and analyze
+    # Runs on an Ubuntu virtual machine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Sets up the Flutter SDK
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      # Gets the dependencies and builds the app
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+  build_ios:
+    name: Build Flutter(ios)
+    needs: [flutter_test]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter clean
+      - run: flutter build ios --no-codesign
+
+      # Package the app into an IPA file
+      
+      - run: |
+          cd ios
+          rm podfile.lock
+          pod deintegrate
+          pod repo update
+          pod install
+      - run: |
+          flutter build ios --no-codesign --build-name=$GITHUB_SHA --build-number=$GITHUB_RUN_NUMBER
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+
+      # Uploads the app to Firebase App Distribution
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          releaseNotesFile: build/ios/iphoneos/Runner.app/RELEASENOTES.txt
+          artifactPath: app.ipa
+
+  

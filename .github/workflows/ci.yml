@@ -26,20 +26,6 @@ jobs:
       - run: flutter analyze
       - run: flutter test
 
-  build_ios:
-    name: Build Flutter(ios)
-    needs: [flutter_test]
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          cache: true
-      - run: flutter pub get
-      - run: flutter clean
-      - run: flutter build ios --no-codesign
-
   build_appbundle:
       name: Build Flutter(android)
       needs: [flutter_test]
@@ -53,4 +39,20 @@ jobs:
         - run: flutter pub get
         - run: flutter clean
         - run: flutter build appbundle
+        - name: Push to Releases
+          uses: ncipollo/release-action@v1
+          with:
+            artifacts: "build/app/outputs/apk/release/*"
+            tag: v1.0.${{github.run_number}}
+            token: ${{secrets.TOKEN}}
+
+       # Uploads the app to Firebase App Distribution
+
+        - name: Upload to Firebase App Distribution
+          uses: wzieba/Firebase-Distribution-Github-Action@v1.0.0
+          with:
+            appId: ${{ secrets.FIREBASE_APP_ID }}
+            token: ${{ secrets.FIREBASE_TOKEN }}
+            releaseNotesFile: build/app/outputs/bundle/release/output-metadata/RELEASENOTES.txt
+            artifactPath: build/app/outputs/bundle/release/app-release.aab
 
