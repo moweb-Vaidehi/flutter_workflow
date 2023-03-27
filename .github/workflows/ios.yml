@@ -1,5 +1,5 @@
 # The name of your workflow
-name: CI
+name: IOS
 
 # When should this workflow run?
 on:
